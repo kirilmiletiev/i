@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+	<!-- <link rel="stylesheet" href="styles.css"> -->
+	<!-- GLOWING BTN EFFECT -->
+	<style>
+		/* body {
+			margin: 0;
+			font-family: Arial, Helvetica, sans-serif;
+			background: linear-gradient(217deg, rgba(255, 0, 0, .8), rgba(255, 0, 0, 0) 70.71%),
+				linear-gradient(127deg, rgba(0, 255, 0, .8), rgba(0, 255, 0, 0) 70.71%),
+				linear-gradient(336deg, rgba(0, 0, 255, .8), rgba(0, 0, 255, 0) 70.71%);
+
+		} */
+
+
+		.topnav {
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		.topnav a {
+			float: left;
+			color: #f2f2f2;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: wavy;
+			font-size: 50%;
+		}
+
+		.topnav a:hover {
+			background-color: #ddd;
+			color: black;
+		}
+
+		.topnav a.active {
+			background-color: #4CAF50;
+			color: white;
+		}
+
+
+		.glow {
+			position: sticky;
+			top: 8%;
+			left: 90%;
+			transform: translate(-10%, -10%);
+			width: 140px;
+			height: 12px;
+			text-align: top;
+			;
+			line-height: 4px;
+			text-decoration: none;
+			text-transform: uppercase;
+			color: rgb(37, 35, 35);
+			font-family: Arial, Helvetica, sans-serif, Impact, 'Arial Narrow Bold';
+			font-size: 20px;
+			border-radius: 40px;
+			outline: none;
+			box-sizing: border-box;
+			background: linear-gradient(90deg,
+					#e97d8b, #c462a6, #ab74ca,
+					#937beb, #6778c5, #61cfe293,
+					#58c491, #67b35c, #b0d162,
+					#bdb24e, #d8ae5f, #df8d67);
+			background-size: 600%;
+			z-index: 888;
+			animation: animate 14s linear infinite;
+		}
+
+		.glow:hover {
+			animation: animate 8s linear infinite;
+		}
+
+		@keyframes animate {
+			0% {
+				background-position: 0;
+			}
+
+			100% {
+				background-position: 400%;
+			}
+		}
+
+		.glow:before {
+			content: '';
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			bottom: -5px;
+			left: -5px;
+			z-index: -1;
+			background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4, #69c5cf);
+			background-size: 400%;
+			border-radius: 40px;
+			filter: blur(40px);
+			opacity: 0;
+			transition: 2s;
+		}
+
+		.glow:hover:before {
+			filter: blur(20px);
+			opacity: 1;
+			animation: animate 7s linear infinite;
+		}
+	</style>
+
+
+
+
+
+
+	<script>
+		function initialPaging(prefix) {
+			var one = document.getElementById('Home').style.display = 'none';
+			var two = document.getElementById('About').style.display = 'none';
+			var tree = document.getElementById('Contact').style.display = 'none';
+			var four = document.getElementById('Tools').style.display = 'none';
+
+			document.getElementById(prefix).style.display = 'block';
+		}
+	</script>
+
+
+	<title>Kiril Miletiev (CV~like)</title>
+
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load("current", { packages: ["corechart"] });
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+				['Task', 'Hours per Day'],
+				['Work', 11],
+				['Eat', 2],
+				['Commute', 2],
+				['Watch TV', 2],
+				['Sleep', 7]
+			]);
+
+			var options = {
+				title: 'My Daily Activities',
+				is3D: true,
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+			chart.draw(data, options);
+		}
+	</script>
+
+
+
+
+</head>
+
+<body>
+	<header>
+		<nav class="topnav">
+			<a href="#/Home" onclick="initialPaging('Home')">Home</a>
+			<a href="#/About" onclick="initialPaging('About')">About</a>
+			<a href="#/Contact" onclick="initialPaging('Contact')">Contact</a>
+			<a href="#/Tools" onclick="initialPaging('Tools')">Tools</a>
+			<a class="glow" href="#/gLoW" onclick="initialPaging('Tools')">click_if_you_dare..</a>
+		</nav>
+	</header>
+
+	<div id="Home" class="page" style="display: block;">
+		<div class="main" id="homeEl">
+
+		</div>
+	</div>
+	<div id="About" class="page" style="display: none;">
+		<div class="main" id="aboutEl">
+
+			<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+				<title>Kiril's Resume.pdf</title>
+
+				<!-- This snippet is used in the Firefox extension (included from viewer.html) -->
+				<base href="resource://pdf.js/web/">
+				<script src="../build/pdf.js"></script>
+
+
+				<link rel="stylesheet" href="viewer.css">
+
+
+
+				<script src="viewer.js"></script>
+
+			</head>
+
+			<body tabindex="1">
+				<div id="outerContainer">
+
+					<div id="sidebarContainer">
+						<div id="toolbarSidebar">
+							<div id="toolbarSidebarLeft">
+								<div class="splitToolbarButton toggled">
+									<button id="viewThumbnail" class="toolbarButton toggled" title="Show Thumbnails"
+										tabindex="2" data-l10n-id="thumbs">
+										<span data-l10n-id="thumbs_label">Thumbnails</span>
+									</button>
+									<button id="viewOutline" class="toolbarButton"
+										title="Show Document Outline (double-click to expand/collapse all items)"
+										tabindex="3" data-l10n-id="document_outline" disabled="">
+										<span data-l10n-id="document_outline_label">Document Outline</span>
+									</button>
+									<button id="viewAttachments" class="toolbarButton" title="Show Attachments"
+										tabindex="4" data-l10n-id="attachments" disabled="">
+										<span data-l10n-id="attachments_label">Attachments</span>
+									</button>
+									<button id="viewLayers" class="toolbarButton"
+										title="Show Layers (double-click to reset all layers to the default state)"
+										tabindex="5" data-l10n-id="layers" disabled="">
+										<span data-l10n-id="layers_label">Layers</span>
+									</button>
+								</div>
+							</div>
+
+							<div id="toolbarSidebarRight">
+								<div id="outlineOptionsContainer" class="hidden">
+									<div class="verticalToolbarSeparator"></div>
+
+									<button id="currentOutlineItem" class="toolbarButton" disabled=""
+										title="Find Current Outline Item" tabindex="6"
+										data-l10n-id="current_outline_item">
+										<span data-l10n-id="current_outline_item_label">Current Outline Item</span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div id="sidebarContent">
+							<div id="thumbnailView"><a
+									href="file:///C:/Users/A1BG46~2/AppData/Local/Temp/Kiril's%20Resume.pdf#page=1"
+									title="Page 1">
+									<div class="thumbnail selected" data-page-number="1">
+										<div class="thumbnailSelectionRing" style="width: 100px; height: 128px;"></div>
+									</div>
+								</a></div>
+							<div id="outlineView" class="hidden"></div>
+							<div id="attachmentsView" class="hidden"></div>
+							<div id="layersView" class="hidden"></div>
+						</div>
+						<div id="sidebarResizer"></div>
+					</div> <!-- sidebarContainer -->
+
+					<div id="mainContainer">
+						<div class="findbar hidden doorHanger" id="findbar">
+							<div id="findbarInputContainer">
+								<input id="findInput" class="toolbarField" title="Find" placeholder="Find in document…"
+									tabindex="91" data-l10n-id="find_input">
+								<div class="splitToolbarButton">
+									<button id="findPrevious" class="toolbarButton findPrevious"
+										title="Find the previous occurrence of the phrase" tabindex="92"
+										data-l10n-id="find_previous">
+										<span data-l10n-id="find_previous_label">Previous</span>
+									</button>
+									<div class="splitToolbarButtonSeparator"></div>
+									<button id="findNext" class="toolbarButton findNext"
+										title="Find the next occurrence of the phrase" tabindex="93"
+										data-l10n-id="find_next">
+										<span data-l10n-id="find_next_label">Next</span>
+									</button>
+								</div>
+							</div>
+
+							<div id="findbarOptionsOneContainer">
+								<input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
+								<label for="findHighlightAll" class="toolbarLabel"
+									data-l10n-id="find_highlight">Highlight
+									all</label>
+								<input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
+								<label for="findMatchCase" class="toolbarLabel"
+									data-l10n-id="find_match_case_label">Match
+									case</label>
+							</div>
+							<div id="findbarOptionsTwoContainer">
+								<input type="checkbox" id="findEntireWord" class="toolbarField" tabindex="96">
+								<label for="findEntireWord" class="toolbarLabel"
+									data-l10n-id="find_entire_word_label">Whole
+									words</label>
+								<span id="findResultsCount" class="toolbarLabel hidden"></span>
+							</div>
+
+							<div id="findbarMessageContainer">
+								<span id="findMsg" class="toolbarLabel"></span>
+							</div>
+						</div> <!-- findbar -->
+
+						<div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
+							<div id="secondaryToolbarButtonContainer">
+								<button id="secondaryPresentationMode"
+									class="secondaryToolbarButton presentationMode visibleLargeView"
+									title="Switch to Presentation Mode" tabindex="51" data-l10n-id="presentation_mode">
+									<span data-l10n-id="presentation_mode_label">Presentation Mode</span>
+								</button>
+
+								<button id="secondaryOpenFile" class="secondaryToolbarButton openFile visibleLargeView"
+									title="Open File" tabindex="52" data-l10n-id="open_file" hidden="">
+									<span data-l10n-id="open_file_label">Open</span>
+								</button>
+
+								<button id="secondaryPrint" class="secondaryToolbarButton print visibleMediumView"
+									title="Print" tabindex="53" data-l10n-id="print">
+									<span data-l10n-id="print_label">Print</span>
+								</button>
+
+								<button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView"
+									title="Download" tabindex="54" data-l10n-id="download">
+									<span data-l10n-id="download_label">Download</span>
+								</button>
+
+								<a href="file:///C:/Users/A1BG46~2/AppData/Local/Temp/Kiril's%20Resume.pdf#page=1&amp;zoom=auto,-13,799"
+									id="secondaryViewBookmark" class="secondaryToolbarButton bookmark visibleSmallView"
+									title="Current view (copy or open in new window)" tabindex="55"
+									data-l10n-id="bookmark">
+									<span data-l10n-id="bookmark_label">Current View</span>
+								</a>
+
+								<div class="horizontalToolbarSeparator visibleLargeView"></div>
+
+								<button id="firstPage" class="secondaryToolbarButton firstPage" title="Go to First Page"
+									tabindex="56" data-l10n-id="first_page" disabled="">
+									<span data-l10n-id="first_page_label">Go to First Page</span>
+								</button>
+								<button id="lastPage" class="secondaryToolbarButton lastPage" title="Go to Last Page"
+									tabindex="57" data-l10n-id="last_page" disabled="">
+									<span data-l10n-id="last_page_label">Go to Last Page</span>
+								</button>
+
+								<div class="horizontalToolbarSeparator"></div>
+
+								<button id="pageRotateCw" class="secondaryToolbarButton rotateCw"
+									title="Rotate Clockwise" tabindex="58" data-l10n-id="page_rotate_cw">
+									<span data-l10n-id="page_rotate_cw_label">Rotate Clockwise</span>
+								</button>
+								<button id="pageRotateCcw" class="secondaryToolbarButton rotateCcw"
+									title="Rotate Counterclockwise" tabindex="59" data-l10n-id="page_rotate_ccw">
+									<span data-l10n-id="page_rotate_ccw_label">Rotate Counterclockwise</span>
+								</button>
+
+								<div class="horizontalToolbarSeparator"></div>
+
+								<button id="cursorSelectTool" class="secondaryToolbarButton selectTool toggled"
+									title="Enable Text Selection Tool" tabindex="60"
+									data-l10n-id="cursor_text_select_tool">
+									<span data-l10n-id="cursor_text_select_tool_label">Text Selection Tool</span>
+								</button>
+								<button id="cursorHandTool" class="secondaryToolbarButton handTool"
+									title="Enable Hand Tool" tabindex="61" data-l10n-id="cursor_hand_tool">
+									<span data-l10n-id="cursor_hand_tool_label">Hand Tool</span>
+								</button>
+
+								<div class="horizontalToolbarSeparator"></div>
+
+								<button id="scrollVertical"
+									class="secondaryToolbarButton scrollModeButtons scrollVertical toggled"
+									title="Use Vertical Scrolling" tabindex="62" data-l10n-id="scroll_vertical">
+									<span data-l10n-id="scroll_vertical_label">Vertical Scrolling</span>
+								</button>
+								<button id="scrollHorizontal"
+									class="secondaryToolbarButton scrollModeButtons scrollHorizontal"
+									title="Use Horizontal Scrolling" tabindex="63" data-l10n-id="scroll_horizontal">
+									<span data-l10n-id="scroll_horizontal_label">Horizontal Scrolling</span>
+								</button>
+								<button id="scrollWrapped"
+									class="secondaryToolbarButton scrollModeButtons scrollWrapped"
+									title="Use Wrapped Scrolling" tabindex="64" data-l10n-id="scroll_wrapped">
+									<span data-l10n-id="scroll_wrapped_label">Wrapped Scrolling</span>
+								</button>
+
+								<div class="horizontalToolbarSeparator scrollModeButtons"></div>
+
+								<button id="spreadNone"
+									class="secondaryToolbarButton spreadModeButtons spreadNone toggled"
+									title="Do not join page spreads" tabindex="65" data-l10n-id="spread_none">
+									<span data-l10n-id="spread_none_label">No Spreads</span>
+								</button>
+								<button id="spreadOdd" class="secondaryToolbarButton spreadModeButtons spreadOdd"
+									title="Join page spreads starting with odd-numbered pages" tabindex="66"
+									data-l10n-id="spread_odd">
+									<span data-l10n-id="spread_odd_label">Odd Spreads</span>
+								</button>
+								<button id="spreadEven" class="secondaryToolbarButton spreadModeButtons spreadEven"
+									title="Join page spreads starting with even-numbered pages" tabindex="67"
+									data-l10n-id="spread_even">
+									<span data-l10n-id="spread_even_label">Even Spreads</span>
+								</button>
+
+								<div class="horizontalToolbarSeparator spreadModeButtons"></div>
+
+								<button id="documentProperties" class="secondaryToolbarButton documentProperties"
+									title="Document Properties…" tabindex="68" data-l10n-id="document_properties">
+									<span data-l10n-id="document_properties_label">Document Properties…</span>
+								</button>
+							</div>
+						</div> <!-- secondaryToolbar -->
+
+						<div class="toolbar">
+							<div id="toolbarContainer">
+								<div id="toolbarViewer">
+									<div id="toolbarViewerLeft">
+										<button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar"
+											tabindex="11" data-l10n-id="toggle_sidebar" aria-expanded="false"
+											aria-controls="sidebarContainer">
+											<span data-l10n-id="toggle_sidebar_label">Toggle Sidebar</span>
+										</button>
+										<div class="toolbarButtonSpacer"></div>
+										<button id="viewFind" class="toolbarButton hidden" title="Find in Document"
+											tabindex="12" data-l10n-id="findbar" aria-expanded="false"
+											aria-controls="findbar">
+											<span data-l10n-id="findbar_label">Find</span>
+										</button>
+										<div class="splitToolbarButton hiddenSmallView">
+											<button class="toolbarButton pageUp" title="Previous Page" id="previous"
+												tabindex="13" data-l10n-id="previous" disabled="">
+												<span data-l10n-id="previous_label">Previous</span>
+											</button>
+											<div class="splitToolbarButtonSeparator"></div>
+											<button class="toolbarButton pageDown" title="Next Page" id="next"
+												tabindex="14" data-l10n-id="next" disabled="">
+												<span data-l10n-id="next_label">Next</span>
+											</button>
+										</div>
+										<input type="number" id="pageNumber" class="toolbarField pageNumber"
+											title="Page" value="1" size="4" min="1" tabindex="15" data-l10n-id="page"
+											autocomplete="off" max="1">
+										<span id="numPages" class="toolbarLabel">of 1</span>
+									</div>
+									<div id="toolbarViewerRight">
+										<button id="presentationMode"
+											class="toolbarButton presentationMode hiddenLargeView"
+											title="Switch to Presentation Mode" tabindex="31"
+											data-l10n-id="presentation_mode">
+											<span data-l10n-id="presentation_mode_label">Presentation Mode</span>
+										</button>
+
+										<button id="openFile" class="toolbarButton openFile hiddenLargeView"
+											title="Open File" tabindex="32" data-l10n-id="open_file" hidden="">
+											<span data-l10n-id="open_file_label">Open</span>
+										</button>
+
+										<button id="print" class="toolbarButton print hiddenMediumView" title="Print"
+											tabindex="33" data-l10n-id="print">
+											<span data-l10n-id="print_label">Print</span>
+										</button>
+
+										<button id="download" class="toolbarButton download hiddenMediumView"
+											title="Download" tabindex="34" data-l10n-id="download">
+											<span data-l10n-id="download_label">Download</span>
+										</button>
+										<a href="file:///C:/Users/A1BG46~2/AppData/Local/Temp/Kiril's%20Resume.pdf#page=1&amp;zoom=auto,-13,799"
+											id="viewBookmark" class="toolbarButton bookmark hiddenSmallView"
+											title="Current view (copy or open in new window)" tabindex="35"
+											data-l10n-id="bookmark">
+											<span data-l10n-id="bookmark_label">Current View</span>
+										</a>
+
+										<div class="verticalToolbarSeparator hiddenSmallView"></div>
+
+										<button id="secondaryToolbarToggle" class="toolbarButton" title="Tools"
+											tabindex="36" data-l10n-id="tools" aria-expanded="false"
+											aria-controls="secondaryToolbar">
+											<span data-l10n-id="tools_label">Tools</span>
+										</button>
+									</div>
+									<div id="toolbarViewerMiddle">
+										<div class="splitToolbarButton">
+											<button id="zoomOut" class="toolbarButton zoomOut" title="Zoom Out"
+												tabindex="21" data-l10n-id="zoom_out">
+												<span data-l10n-id="zoom_out_label">Zoom Out</span>
+											</button>
+											<div class="splitToolbarButtonSeparator"></div>
+											<button id="zoomIn" class="toolbarButton zoomIn" title="Zoom In"
+												tabindex="22" data-l10n-id="zoom_in">
+												<span data-l10n-id="zoom_in_label">Zoom In</span>
+											</button>
+										</div>
+										<span id="scaleSelectContainer" class="dropdownToolbarButton">
+											<select id="scaleSelect" title="Zoom" tabindex="23" data-l10n-id="zoom">
+												<option id="pageAutoOption" title="" value="auto" selected="selected"
+													data-l10n-id="page_scale_auto">Automatic Zoom</option>
+												<option id="pageActualOption" title="" value="page-actual"
+													data-l10n-id="page_scale_actual">Actual Size</option>
+												<option id="pageFitOption" title="" value="page-fit"
+													data-l10n-id="page_scale_fit">
+													Page Fit</option>
+												<option id="pageWidthOption" title="" value="page-width"
+													data-l10n-id="page_scale_width">Page Width</option>
+												<option id="customScaleOption" title="" value="custom"
+													disabled="disabled" hidden="true"></option>
+												<option title="" value="0.5" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 50 }">50%</option>
+												<option title="" value="0.75" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 75 }">75%</option>
+												<option title="" value="1" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 100 }">100%</option>
+												<option title="" value="1.25" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 125 }">125%</option>
+												<option title="" value="1.5" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 150 }">150%</option>
+												<option title="" value="2" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 200 }">200%</option>
+												<option title="" value="3" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 300 }">300%</option>
+												<option title="" value="4" data-l10n-id="page_scale_percent"
+													data-l10n-args="{ &quot;scale&quot;: 400 }">400%</option>
+											</select>
+										</span>
+									</div>
+								</div>
+								<div id="loadingBar" class="hidden">
+									<div class="progress" style="height: 100%; width: 100%;">
+										<div class="glimmer">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="viewerContainer" tabindex="0">
+							<div id="viewer" class="pdfViewer">
+								<div class="page" style="width: 925px; height: 1197px;" data-page-number="1"
+									role="region" aria-label="Page 1" data-loaded="true">
+									<div style="width: 925px; height: 1197px;" class="canvasWrapper"><canvas
+											moz-opaque="" style="width: 926px; height: 1198px;" width="1389"
+											height="1797"></canvas></div>
+									<div class="textLayer" style="width: 925px; height: 1197px;"><span
+											style="left: 36.4541px; top: 37.1034px; font-size: 34.8991px; font-family: sans-serif; transform: scaleX(1.04791);"
+											role="presentation" dir="ltr">Kiril Miletiev</span><span
+											style="left: 37.7498px; top: 76.292px; font-size: 18.3134px; font-family: sans-serif; transform: scaleX(1.01349);"
+											role="presentation" dir="ltr">Junior JavaScript / .NET developer</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 109.678px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03446);"
+											role="presentation" dir="ltr">Think outside the brackets </span><span
+											style="left: 200.065px; top: 109.678px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.09556);"
+											role="presentation" dir="ltr">{ }</span><br role="presentation"><span
+											style="left: 143.397px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.992504);"
+											role="presentation" dir="ltr">kirilmiletiev@students.softuni.bg</span><span
+											style="left: 320.063px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 371.106px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(1.01422);"
+											role="presentation" dir="ltr">+359 893 748 997</span><span
+											style="left: 472.528px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 523.201px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.976158);"
+											role="presentation" dir="ltr">Sofia, Bulgaria</span><span
+											style="left: 601.294px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 652.372px; top: 195.728px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(1.03518);"
+											role="presentation" dir="ltr">github.com/kirilmiletiev</span><br
+											role="presentation"><span
+											style="left: 37.766px; top: 246.617px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.99163);"
+											role="presentation" dir="ltr">TECHNICAL SKILLS</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 285.21px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03988);"
+											role="presentation" dir="ltr">Main skills</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 303.178px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.01458);"
+											role="presentation" dir="ltr">Use ReactJS with NodeJS, MongoDb (Mongoose)
+											and
+											ExpressJS,</span><br role="presentation"><span
+											style="left: 37.6634px; top: 319.764px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.0041);"
+											role="presentation" dir="ltr">or ReactJS with ASP.NET Core, MS SQL(Entity
+											Framework).</span><br role="presentation"><span
+											style="left: 37.6634px; top: 336.35px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.0413);"
+											role="presentation" dir="ltr">*Responsive web design for multiple devices
+											and OS (HTML5
+											and</span><br role="presentation"><span
+											style="left: 37.7282px; top: 352.935px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.990473);"
+											role="presentation" dir="ltr">CSS), JQuery, </span><span
+											style="left: 124.112px; top: 352.935px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.981606);"
+											role="presentation" dir="ltr">REST services, </span><span
+											style="left: 215.269px; top: 352.935px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.05539);"
+											role="presentation" dir="ltr">source control (GIT)</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 381.269px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.08875);"
+											role="presentation" dir="ltr">Algorithms and working with big amount of
+											data</span><br role="presentation"><span
+											style="left: 37.7282px; top: 399.237px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02862);"
+											role="presentation" dir="ltr">Algorithms, data structures, SQL</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 427.571px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.10136);"
+											role="presentation" dir="ltr">Testing</span><br role="presentation"><span
+											style="left: 37.7282px; top: 445.539px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.01007);"
+											role="presentation" dir="ltr">API`s, unit testing (nUnit, Jest),
+											SASS</span><br role="presentation"><span
+											style="left: 37.7282px; top: 473.873px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.10332);"
+											role="presentation" dir="ltr">Methodology of software development</span><br
+											role="presentation"><span
+											style="left: 37.7282px; top: 491.841px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.01315);"
+											role="presentation" dir="ltr">Agile, Scrum</span><br
+											role="presentation"><span
+											style="left: 37.766px; top: 536.868px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.985586);"
+											role="presentation" dir="ltr">EDUCATION</span><br role="presentation"><span
+											style="left: 37.6634px; top: 620.392px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.930991);"
+											role="presentation" dir="ltr">01/2018 – Present</span><br
+											role="presentation"><span
+											style="left: 37.7498px; top: 574.901px; font-size: 18.3134px; font-family: sans-serif; transform: scaleX(1.02499);"
+											role="presentation" dir="ltr">C# / .NET web developer</span><br
+											role="presentation"><span
+											style="left: 37.7498px; top: 595.633px; font-size: 18.3134px; font-family: sans-serif; transform: scaleX(1.0356);"
+											role="presentation" dir="ltr">SoftUni</span><br role="presentation"><span
+											style="left: 51.2041px; top: 657.007px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03073);"
+											role="presentation" dir="ltr">C# Fundamentals;</span><span
+											style="left: 160.462px; top: 657.007px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 263.363px; top: 657.007px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.969628);"
+											role="presentation" dir="ltr">C# OOP Basics;</span><br
+											role="presentation"><span
+											style="left: 51.2041px; top: 676.357px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.01313);"
+											role="presentation" dir="ltr">C# OOP Advanced;</span><span
+											style="left: 165.688px; top: 676.357px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 263.363px; top: 676.357px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03948);"
+											role="presentation" dir="ltr">C# Advanced;</span><br
+											role="presentation"><span
+											style="left: 51.2041px; top: 695.707px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03139);"
+											role="presentation" dir="ltr">Entity Framework Core;</span><span
+											style="left: 192.505px; top: 695.707px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 263.363px; top: 695.707px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.933988);"
+											role="presentation" dir="ltr">MS SQL;</span><br role="presentation"><span
+											style="left: 51.2041px; top: 715.057px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.965035);"
+											role="presentation" dir="ltr">C# Web Basics;</span><span
+											style="left: 142.882px; top: 715.057px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 263.363px; top: 715.057px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.97301);"
+											role="presentation" dir="ltr">ASP.NET Core;</span><br
+											role="presentation"><span
+											style="left: 37.766px; top: 767.34px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.972195);"
+											role="presentation" dir="ltr">CERTIFICATES</span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 805.314px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(0.969958);"
+											role="presentation" dir="ltr">ReactJS (11/2019 – 12/2019) </span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 835.03px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(1.01726);"
+											role="presentation" dir="ltr">JS Applications (05/2019 – 07/2019) </span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 864.746px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(1.00828);"
+											role="presentation" dir="ltr">C# WEB (03/2019 – 05/2019) </span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 894.462px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(1.01803);"
+											role="presentation" dir="ltr">C# Fundamentals (02/2019 – 05/2019) </span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 924.178px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(0.996941);"
+											role="presentation" dir="ltr">German B1 (09/2016 – 12/2016)</span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 953.894px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(1.00633);"
+											role="presentation" dir="ltr">MS SQL (03/2018 – 05/2018) </span><br
+											role="presentation"><span
+											style="left: 37.739px; top: 983.61px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(0.962135);"
+											role="presentation" dir="ltr">JS Developer DIPLOMA </span><br
+											role="presentation"><span
+											style="left: 489.727px; top: 246.617px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(1.00929);"
+											role="presentation" dir="ltr">SKILLS</span><br role="presentation"><span
+											style="left: 500.055px; top: 294.885px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02406);"
+											role="presentation" dir="ltr">Problem-SOLVER</span><span
+											style="left: 606.558px; top: 294.885px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 634.469px; top: 294.885px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.07979);"
+											role="presentation" dir="ltr">Self-reliance</span><span
+											style="left: 711.134px; top: 294.885px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 739.166px; top: 294.885px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03384);"
+											role="presentation" dir="ltr">Patience</span><br role="presentation"><span
+											style="left: 500.055px; top: 330.475px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.08348);"
+											role="presentation" dir="ltr">Highly motivated</span><span
+											style="left: 602.986px; top: 330.475px; font-size: 13.4759px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 631.014px; top: 330.475px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.04518);"
+											role="presentation" dir="ltr">Fast lerner</span><br
+											role="presentation"><span
+											style="left: 500.055px; top: 366.066px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.03318);"
+											role="presentation" dir="ltr">Strong sales, negotiation and communication
+											skills</span><br role="presentation"><span
+											style="left: 489.727px; top: 410.056px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.968725);"
+											role="presentation" dir="ltr">PERSONAL PROJECTS</span><br
+											role="presentation"><span
+											style="left: 489.7px; top: 448.029px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(0.97271);"
+											role="presentation" dir="ltr">MERN (11/2019 – 12/2019)</span><br
+											role="presentation"><span
+											style="left: 503.16px; top: 466.974px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.973849);"
+											role="presentation" dir="ltr">Simple MERN stack application using MongoDB,
+											Express,
+											React for</span><br role="presentation"><span
+											style="left: 503.101px; top: 480.45px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.999545);"
+											role="presentation" dir="ltr">front-end and Node for back-end</span><br
+											role="presentation"><span
+											style="left: 489.7px; top: 516.445px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(1.01897);"
+											role="presentation" dir="ltr">Yavlena+ (05/2019 – Present)</span><br
+											role="presentation"><span
+											style="left: 503.16px; top: 535.39px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.976718);"
+											role="presentation" dir="ltr">Test ASP.NET Core scraping app for real
+											estate</span><br role="presentation"><span
+											style="left: 489.7px; top: 571.386px; font-size: 15.2036px; font-family: sans-serif; transform: scaleX(0.996884);"
+											role="presentation" dir="ltr">Shopa (12/2018 – 01/2019)</span><br
+											role="presentation"><span
+											style="left: 503.16px; top: 590.331px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(1.00943);"
+											role="presentation" dir="ltr">My first ASP.NET app</span><br
+											role="presentation"><span
+											style="left: 489.727px; top: 643.638px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.968421);"
+											role="presentation" dir="ltr">LANGUAGES</span><br role="presentation"><span
+											style="left: 489.689px; top: 682.231px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02227);"
+											role="presentation" dir="ltr">English</span><br role="presentation"><span
+											style="left: 489.684px; top: 699.174px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.940602);"
+											role="presentation" dir="ltr">Full Professional Proficiency</span><br
+											role="presentation"><span
+											style="left: 701.849px; top: 682.231px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.0367);"
+											role="presentation" dir="ltr">German</span><br role="presentation"><span
+											style="left: 701.843px; top: 699.174px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.962408);"
+											role="presentation" dir="ltr">Limited Working Proficiency</span><br
+											role="presentation"><span
+											style="left: 489.727px; top: 747.99px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.963292);"
+											role="presentation" dir="ltr">WORK EXPERIENCE</span><br
+											role="presentation"><span
+											style="left: 489.625px; top: 831.515px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.958253);"
+											role="presentation" dir="ltr">05/2014 – Present</span><br
+											role="presentation"><span
+											style="left: 489.711px; top: 786.023px; font-size: 18.3134px; font-family: sans-serif; transform: scaleX(1.02286);"
+											role="presentation" dir="ltr">Real Estate Agent</span><br
+											role="presentation"><span
+											style="left: 489.711px; top: 806.755px; font-size: 18.3134px; font-family: sans-serif; transform: scaleX(0.98277);"
+											role="presentation" dir="ltr">Yavlena</span><br role="presentation"><span
+											style="left: 861.135px; top: 831.515px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.93921);"
+											role="presentation" dir="ltr">Sofia</span><br role="presentation"><span
+											style="left: 489.684px; top: 848.1px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.943309);"
+											role="presentation" dir="ltr">One of the top3 real estate companies in
+											Bulgaria</span><br role="presentation"><span
+											style="left: 503.165px; top: 884.37px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02001);"
+											role="presentation" dir="ltr">Buy / sell </span><span
+											style="left: 563.224px; top: 884.37px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.05245);"
+											role="presentation" dir="ltr">all kind of properties from A to Z;</span><br
+											role="presentation"><span
+											style="left: 503.165px; top: 906.83px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.00758);"
+											role="presentation" dir="ltr">Work with corporate clients ( Nike, NOVA TV,
+										</span><span
+											style="left: 772.273px; top: 906.83px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.04819);"
+											role="presentation" dir="ltr">many investors</span><br
+											role="presentation"><span
+											style="left: 503.101px; top: 923.415px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.04482);"
+											role="presentation" dir="ltr">and builders);</span><br
+											role="presentation"><span
+											style="left: 503.165px; top: 945.875px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.04006);"
+											role="presentation" dir="ltr">Determine clients’ needs and financials
+											abilities to
+											propose</span><br role="presentation"><span
+											style="left: 503.101px; top: 962.461px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.04057);"
+											role="presentation" dir="ltr">solutions that suit them;</span><br
+											role="presentation"><span
+											style="left: 503.165px; top: 984.921px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02671);"
+											role="presentation" dir="ltr">Proven track of successful sales
+											record;</span><br role="presentation"><span
+											style="left: 490.03px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.971494);"
+											role="presentation" dir="ltr">Contact:</span><span
+											style="left: 533.747px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 538.345px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(1.00846);"
+											role="presentation" dir="ltr">0882230300</span><span
+											style="left: 608.937px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 613.327px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr">–</span><span
+											style="left: 619.325px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif;"
+											role="presentation" dir="ltr"> </span><span
+											style="left: 624.098px; top: 1010.85px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.975181);"
+											role="presentation" dir="ltr">Velcheva</span><br role="presentation"><span
+											style="left: 489.727px; top: 1050.68px; font-size: 21.0777px; font-family: sans-serif; transform: scaleX(0.974373);"
+											role="presentation" dir="ltr">INTERESTS</span><br role="presentation"><span
+											style="left: 501.438px; top: 1100.33px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(0.984001);"
+											role="presentation" dir="ltr">Blockchain, AI, ASP.NET CORE, ECMAScript,
+											algorithms,
+											web</span><br role="presentation"><span
+											style="left: 501.373px; top: 1116.92px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.01787);"
+											role="presentation" dir="ltr">scraping, python, React, Angular, Germany,
+											beer
+										</span><span
+											style="left: 792.66px; top: 1116.92px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02882);"
+											role="presentation" dir="ltr">and much</span><br role="presentation"><span
+											style="left: 501.373px; top: 1133.5px; font-size: 13.4759px; font-family: sans-serif; transform: scaleX(1.02853);"
+											role="presentation" dir="ltr">more :)</span><br role="presentation"><span
+											style="left: 37.7228px; top: 639.742px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.875821);"
+											role="presentation" dir="ltr">Courses</span><br role="presentation"><span
+											style="left: 489.684px; top: 867.105px; font-size: 12.0938px; font-family: sans-serif; transform: scaleX(0.964726);"
+											role="presentation" dir="ltr">Achievements/Tasks</span>
+										<div class="endOfContent"></div>
+									</div>
+									<div class="annotationLayer">
+										<section data-annotation-id="36R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -77.8286px -127.543px 0px; left: 77.8286px; top: 127.543px; width: 133.714px; height: 9.6px;"
+											class="linkAnnotation"><a title="mailto:kirilmiletiev@students.softuni.bg"
+												href="mailto:kirilmiletiev@students.softuni.bg" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="37R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -414.514px -127.543px 0px; left: 414.514px; top: 127.543px; width: 102.514px; height: 9.6px;"
+											class="linkAnnotation"><a title="https://github.com/kirilmiletiev"
+												href="https://github.com/kirilmiletiev" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="38R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -157.029px -534.171px 0px; left: 157.029px; top: 534.171px; width: 7.88571px; height: 7.88571px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/75479/25fc30ce"
+												href="https://softuni.bg/certificates/details/75479/25fc30ce" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="39R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -196.114px -553.714px 0px; left: 196.114px; top: 553.714px; width: 7.88572px; height: 7.88571px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/70126/95fbcda0"
+												href="https://softuni.bg/certificates/details/70126/95fbcda0" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="40R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -163.886px -573.257px 0px; left: 163.886px; top: 573.257px; width: 7.88571px; height: 7.88572px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/70577/e27d49a1"
+												href="https://softuni.bg/certificates/details/70577/e27d49a1" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="41R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -207.086px -593.143px 0px; left: 207.086px; top: 593.143px; width: 7.88571px; height: 7.88571px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/69280/ad1a1fe0"
+												href="https://softuni.bg/certificates/details/69280/ad1a1fe0" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="42R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -163.2px -632.571px 0px; left: 163.2px; top: 632.571px; width: 7.88572px; height: 7.88571px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/55451/36b0144c"
+												href="https://softuni.bg/certificates/details/55451/36b0144c" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+										<section data-annotation-id="43R"
+											style="transform: matrix(1.51144, 0, 0, 1.51144, 0, 0); transform-origin: -134.4px -652.114px 0px; left: 134.4px; top: 652.114px; width: 7.88571px; height: 7.88572px;"
+											class="linkAnnotation"><a
+												title="https://softuni.bg/certificates/details/76062/03714fad"
+												href="https://softuni.bg/certificates/details/76062/03714fad" target=""
+												rel="noopener noreferrer nofollow"></a></section>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div> <!-- mainContainer -->
+
+					<div id="overlayContainer" class="hidden">
+						<div id="passwordOverlay" class="container hidden">
+							<div class="dialog">
+								<div class="row">
+									<p id="passwordText" data-l10n-id="password_label">Enter the password to open this
+										PDF file.</p>
+								</div>
+								<div class="row">
+									<input type="password" id="password" class="toolbarField">
+								</div>
+								<div class="buttonRow">
+									<button id="passwordCancel" class="overlayButton"><span
+											data-l10n-id="password_cancel">Cancel</span></button>
+									<button id="passwordSubmit" class="overlayButton"><span
+											data-l10n-id="password_ok">OK</span></button>
+								</div>
+							</div>
+						</div>
+						<div id="documentPropertiesOverlay" class="container hidden">
+							<div class="dialog">
+								<div class="row">
+									<span data-l10n-id="document_properties_file_name">File name:</span>
+									<p id="fileNameField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_file_size">File size:</span>
+									<p id="fileSizeField">-</p>
+								</div>
+								<div class="separator"></div>
+								<div class="row">
+									<span data-l10n-id="document_properties_title">Title:</span>
+									<p id="titleField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_author">Author:</span>
+									<p id="authorField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_subject">Subject:</span>
+									<p id="subjectField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_keywords">Keywords:</span>
+									<p id="keywordsField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_creation_date">Creation Date:</span>
+									<p id="creationDateField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_modification_date">Modification Date:</span>
+									<p id="modificationDateField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_creator">Creator:</span>
+									<p id="creatorField">-</p>
+								</div>
+								<div class="separator"></div>
+								<div class="row">
+									<span data-l10n-id="document_properties_producer">PDF Producer:</span>
+									<p id="producerField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_version">PDF Version:</span>
+									<p id="versionField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_page_count">Page Count:</span>
+									<p id="pageCountField">-</p>
+								</div>
+								<div class="row">
+									<span data-l10n-id="document_properties_page_size">Page Size:</span>
+									<p id="pageSizeField">-</p>
+								</div>
+								<div class="separator"></div>
+								<div class="row">
+									<span data-l10n-id="document_properties_linearized">Fast Web View:</span>
+									<p id="linearizedField">-</p>
+								</div>
+								<div class="buttonRow">
+									<button id="documentPropertiesClose" class="overlayButton"><span
+											data-l10n-id="document_properties_close">Close</span></button>
+								</div>
+							</div>
+						</div>
+					</div> <!-- overlayContainer -->
+
+				</div> <!-- outerContainer -->
+				<div id="printContainer"></div>
+
+
+			</body>
+		</div>
+	</div>
+
+	<div id="Contact" class="page" style="display: none;">
+		<div class="main" id="contactEl">
+
+		</div>
+	</div>
+
+	<div id="Tools" class="page" style="display: none;">
+		<div class="main" id="toolsEl">
+			<div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+		</div>
+	</div>
+
+</body>
+
+</html>
