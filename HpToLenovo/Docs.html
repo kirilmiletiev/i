@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="docs.css" />
+    <title>Docs</title>
+    <script src="img/https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $(".hamburger").click(function() {
+          $(".wrapper").toggleClass("collapse");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <div class="hamburger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul>
+          <li>
+            <a href="#WEB_API" class="active">
+              <span class="title">WEB_API - Begining</span></a
+            >
+          </li>
+          <li>
+            <a href="#HangFire">
+              <span class="title">HangFire</span>
+            </a>
+          </li>
+          <li>
+            <a href="#Controllers">
+              <span class="title">Controllers + Mediatr</span>
+            </a>
+          </li>
+          <li>
+            <a href="#Domain">
+              <span class="title">Domain</span>
+            </a>
+          </li>
+          <li>
+            <a href="#NuGet">
+              <span class="title">Dependencies and Nuget</span>
+            </a>
+          </li>
+          <li>
+            <a href="#Tests">
+              <span class="title">Domain.Tests</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="main_container">
+        <h3 id="WEB_API">WEB_API</h3>
+        <div class="item">
+          <div class="item_text2">
+                WebApi -> Основното нещо в WebApi-то са контролерите. За тези микросървизи използваме AspNetCore, заедно с кода рефериран от Microservice core проекта.
+              Освен контролерите обаче има няколко неща през които трябва да минем. 
+              -> Program.cs и Startup.cs. Program.cs използва WebHost set up-a написан в Microservice core проекта, като подава Startup. Всички специфични за проекта
+              логики сa в Startup.cs и Domain.Layer3.DomainExtensions. 
+              Класът също използва готови функционалности от core-a, като добавяне на конфигурации* (от appsettings.json),добавяне на Медиатор*,
+              Swagger*, както и Common сървисите*. За да видите точно какво, защо -> Microservice.A1.Client.Web. Също класът се използва и за добавяне на Hangfire*.
+              
+              1) Конфигурации : Използва се Microsoft extensions -> Представляват двойки: ключ и стойност, които са стрингове. Най-често се използват за запазване на 
+               Connection стрингове към база. Конфигурациите се описват в Appsettings.json в WebApi проекта. Винаги прочита първо appsettings.json, след което override-ва
+               и/или дописва конфигурациите, тоест:
+               Структура спрямо средата за качване:
+                  - Ако се качва на 10.250.231.71 (71цата) - Ще чете и appsettings.Production.json (гледа към база '150')
+                  - Ако се качва на 10.250.231.72 (72ката) - Ще чете и appsettings.Test0.json (гледа към база '24')
+                  - Ако се качва на 10.250.231.74 (74ката) - Ще чете и appsettings.Test2.json	(гледа към база '48')
+               
+              2) Mediatr - Медиаторът е вид middleware, за който ще обясня малко по-напред. Цялата структура в Domain.Layer3 е такава заради него и unit тестовете
+              
+              3) Swagger - Заложен по default в core-a, представлява функционалността на Postman, но с автоматично генерирани методи за изпълнение
+               разделени по контролери. Тук може да тествате някой endpoint, като Swagger-a предвижда и параметрите които очаквате във вашата функция. Той се запалва всеки
+               път при пускане на WebApi-то. http://localhost:{port}/index.html
+              
+              4) Common services - DomainExtensions се използва за setup на security, audit, мапингите направени в Layer2, Медиаторът се добавя като сървис там,
+               както и конекциите към базата/ите и също асинхронните таскове, които са за Hangfire. След което целия този config се използва в bootstrap-a на WebApi-то.
+               За пример може да разгледате Telesales,CorporateSales или Schedules микросървисите.
+               
+            <b id="HangFire">5)  Hangfire</b>
+                 Подобно на Swagger, ако има добавен Hangfire в проекта, се достъпва от http://localhost:{port}/hangfire, което отваря dashboard-а му.
+               Hangfire служи за контролиране на асинхронни таскове, като може да задаваш кога и на какъв период да се изпълнява даден Task.
+               За тази цел първо е нужен асинхронен Task, който изпълнява нужната scheduled задача. Този таск се добавя чрез ваш 'сървиз' в DomainExtensions.
+               Setup-a се случва в startup.cs. 
+                  - Първо в configureServices преди bootstrap-a се добавя: ConfigureHangfire.AddHangFire(services, _configuration.GetConnectionString("Hangfire"));
+                  Това ще вземе описаната от вас връзка в appsettings.json, за да направи connection с базата (Hangfire пази информация за backgroundJobServer-ите си и др.)
+                  Примерна двойка за връзка с тестова (24ка): "Hangfire": "Password=p@ssw0rd;Persist Security Info=True;User ID=sa;Data Source=10.250.231.24;Database=HangFire"
+                  След което в configure ф-ята трябва да създадем JobServer, dashboard и да добавим Service-a за Таск-а.
+                  Пример:
+                      var corpSalesService = container.GetService&lt;ICorporateSalesService>();
+                      var manager = container.GetService&lt;IRecurringJobManager>();
+      
+                      manager.AddOrUpdate("corporatesales:sync-csusers", () => corpSalesService.SyncCsUsers(), Cron.Daily(8), TimeZoneInfo.Local, "corporatesales");
+      
+                      var server = new BackgroundJobServer
+                      (
+                          new BackgroundJobServerOptions
+                          {
+                              Queues = new[] { "corporatesales" },
+                              ServerName = "corporatesales"
+                          }
+                      );
+                      app.UseHangfireDashboard(
+                      options: new DashboardOptions
+                      {
+                          Authorization = new[] { new DashboardAuthorizationFilter() },
+                          IgnoreAntiforgeryToken = true
+                      });
+                  
+                  AddOrUpdate приема име на таска(смени префикса) и към кой таск реално се закача, след което на какво време да се изпълнява и 'опашката' към която е закачен. В случая
+                  опашката е corpsales, и е хубаво за всеки отделен проект да има отделна опашка, тоест навсякъде в примера corpsales да го замените с име от вашият проект.
+                  След това създаваме jobserver и инициираме дашборда. Има и други начини за ползване на Hangfire, за повече инфо: https://www.hangfire.io/ .
+              
+              6) Друго важно което се използва е security service-a, който просто споменах малко по-нагоре. Той също като DomainExtensions живее в Layer3, но се използва
+               най-често, ако не винаги в WebApi контролерите. Чрез него и токена, който се получава от заявка, може да идентифицираме кой е user-a, каква му е ролята и
+               какви са му правата и др. и съответно да Challange-ваме unauthorized заявки. Тук няма да влизам в детайли, отново може да разгледате как работи 
+               В някой от микросървисите (corporatesales,telesales,schedules) и допълнително Miroservice.Authorization Layer3 SecurityHelper.
+               
+              7) Properties->launchSettings -> Форматът тук навсякъде е еднакъв, единственото което е хубаво да промените са портовете. Няма да влизам в детайли, може
+               да прочетете допълнително тук: https://www.talkingdotnet.com/launchsetting-json-in-aspnet-5/
+              
+              
+            <b id="Controllers">8)Контролери + медиатор.</b> За доста готова функционалност използваме aspnetcore mvc. Като добра практика, контролер се прави на логически разделени
+               части от проекта. Например ако имаме дадена Entity структура от Работник, Шефа му и Корпорацията в която работят, най-добра практика би била за всеки
+               един от тях да бъде отделен по един контролер. Реално ние ще заделим endpoint-и от нашето апи, например :
+                  localhost/worker
+                  localhost/manager
+                  localhost/corporation
+               Но всеки suffix/надставка(може и без) над тези url-и ще са функции, които отговарят на endpoint-и
+               Малко по-нагледно:
+               
+              namespace WebApi.Controllers
+              {
+                  [ApiController]
+                  [Route("api/[controller]")]
+                  public class WorkerController : Controller
+                  {
+                      private readonly ISecurityService _securityService;
+                      private readonly IMediator _mediator;
+                  
+                      public WorkerController(IMediator mediator, ISecurityService securityService)
+                      {
+                          _mediator = mediator;
+                          _securityService = securityService;
+                      }
+                  
+                      [HttpGet]
+                      public async Task&lt;IActionResult> GetList(int? currentPage, int? perPage, string sortBy, string sortOrd,string name)
+                      {
+                          
+                          var context = new GridContext
+                          {
+                              CurrentPage = currentPage ?? 1,
+                              PerPage = perPage ?? 10,
+                              SortBy = sortBy,
+                              SortOrder = sortOrd,
+                          };
+                  
+                          context.AddFilter("name",name);
+                          var gridData = await _mediator.Send(new WorkerListRequest { Context = context });
+                  
+                          return Ok(gridData);
+                      }
+                  }
+              }				
+                  
+               Първо имаме атрибут ApiController, достатъчно ясно е какво прави. Със следващият атрибут закачаме този контролер да отговаря на заявки към 
+               api/[името на класа без 'Controller'] -> тоест class WorkerController -> Route[api/Worker]. Класът също наследява Controller от aspnet, който се грижи
+               за доста неща, като може да прочетете тук: https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.controller
+              
+               След което в класът си слагам променливи за security и mediator, като те биват inject-нати автоматично от aspnet в конструктора.
+               Единственото нещо е да започнете да пишете endpoint функциите. В примерът горе имаме атрибутът HttpGet, което в означава че на /worker при GET заявка
+               ще се обърне към контролера, който ще пренасочи към функцията с атрибута. Всяка функция е асинхронен Таск, името на функцията няма значение, но параметрите имат.
+               За това отново ще ви оставя да прочетете в интернет. GridContext е от A1 core-a, като е част от компоненти написани за улеснение, не е задължително да се ползват,
+               но вие може да прецените. Всичките компоненти са описани Microservice._Core. След това вече е същинската част за медиатора. Ролята на медиатора е да
+               изпраща 'запитване' за заявки от даден тип и да връща отговор от тяхното изпълнение.
+               Има 4ри главни неща в логиката на медиатора:
+               
+                  Send() -> изпраща заявка от тип (от горния пример изпраща ListRequest)
+                  Request -> Клас наследяващ IRequest(от Mediatr) и описващ нужните за request-a properties, както е по-горе Context
+                  Handler -> Обработва конкретен Request и връща отговор към медиатора.
+                  Service -> Цялата логика която трябва да изпълни Handler-a, но отделена за да може да бъде unit тествана (Mockup-a не си струва)
+               
+               И съответните допълнения към примера: 
+               В Domain.Layer3 ще имаме Папка отговаряща за всички функционалности свързани с нашият контролер. Нека се казва Worker.
+               В нея за всеки endpoint ще си правим отделна папка -> в случая от примера, например GetWorkerList.
+               В нея ще стоят WorkerListRequest,WorkerListHandler и WorkerListService
+  
+                  namespace Domain.Layer3.Worker.GetWorkerList
+                  {
+                      public class WorkerListRequest : IRequest&lt;GridData>
+                      {
+                          public GridContext Context { get; set; }
+                      }
+                  }
+                  
+                  
+                  namespace Domain.Layer3.Worker.GetWorkerList
+                  {
+                      public class WorkerListHandler : IRequestHandler&lt;WorkerListRequest, GridData>
+                      {
+                          private readonly IOssDb _db;
+                  
+                          public WorkerListHandler(IOssDb db)
+                          {
+                              _db = db;
+                          }
+                  
+                          public async Task&lt;GridData> Handle(WorkerListRequest request, CancellationToken cancellationToken)
+                          {
+                              using (var session = _db.OpenSession())
+                              {
+                                  var service = new WorkerListService();
+                                  return await service.GetList(session, request.Context, cancellationToken);
+                              }
+                          }
+                      }
+                  }
+  
+               Handler-a наследява IRequestHandler, в който е описано, че ще 'отговори' на Send заявка с параметър WorkerListRequest, и ще върне GridData.
+               След като Handler-a бъде извикан, в неговия конструктор се Inject-ват IServiceCollection сървисите, като в случаят сме написали да очакваме
+               конекцията към осс базата, но тук може да е всяка друга конекция/сървис.
+               След това Handler-a изпълнява Handle Функцията, която е всъщност извикана с параметър Request-a, откъде може да си вземем параметрите:
+               в случая Context. Отделно препоръчвам да прочетете за cancellationToken в интернет.
+               
+               Хубавото на injection-a е че получаваме връзката с базата и контролираме всичко -> сесии, транзакции, persisting, etc...
+               Още в началото на ф-ята отваряме сесия, която подаваме на нашият service, където стои логиката за взимането на списъка от базата.
+  
+               Остана последната стъпка.
+  
+                  namespace Domain.Layer3.Worker.GetWorkerList
+                  {
+                      public class WorkerListService
+                      {
+                          public async Task&lt;GridData> GetList(ISession session,GridContext context,CancellationToken cancellationToken)
+                          {
+                              var query = session.Query&lt;Worker>();
+                              query = query.AddFilter(context, "Name", x => x.Name.Contains(context.GetFilterString("Name")));
+                  
+                              var count = await query.CountAsync(cancellationToken);
+                  
+                              // Sort logic
+                              switch (context.SortBy)
+                              {
+                                  case "name":
+                                      query = query.SetOrder(context, x => x.Name);
+                                      break;								
+                              }
+                  
+                              // Paging logic
+                              query = query.SetPaging(context, count);
+                  
+                              var data = await query
+                                  .Select(
+                                      x => new GridRow
+                                      {
+                                          Object = new
+                                          {
+                                              x.Id,
+                                              x.Name
+                                          },
+                                      }
+                                  )
+                                  .ToListAsync(cancellationToken);
+                  
+                              return new GridData(data, count, context);
+                          }
+                      }
+                  }
+  
+               Какво се случва в горния код: Правим си Query за Entity Worker, което ще направи заявката към базата и таблицата за Worker.
+               След което от готовия компонент Context дефинираме филтър за query-то. Тоест ако има подадено име от заявката, да филтрираме резултата спрямо него.
+               Ако е подадена сортировка, сортираме по този критерий, след което "разделяме на страници" резултатът спрямо PerPage и Paging параметрите.
+               Накрая изпълняваме query-то и връщаме отговор (Griddata и GridRow са от А1.core, за улеснение при работа с ReactAdmin).
+          </div>
+        </div>
+        <h3 id="Domain">Domain</h3>
+        <div class="item">
+          <div class="item_text2">
+            - Domain -> Тук живее 95% от логиката на микросървиза и тя бива разделена на няколко основни части:
+		
+			1)Layer 1 -> Тук се описват в класове всякa една от същностите(entities).
+			  Например имаме нужда от клас, който описва един реален обект, примерно локация.
+			  За тази локация създаваме клас, който описва всяко едно нейно свойство(property),
+			  като в общият случай искаме да имаме и getter и setter за свойството.
+			  Тези същности в общият случай се създават спрямо вече съществуваща таблица/и в базата и 
+			  трябва типът на всяко едно свойство да отговаря на тип-а на съответната колона.
+			  
+			  public class Location : EntityBase&lt;int>
+			  {
+				  public virtual string Name { get; set; }
+			  }
+			  
+			  Класът трябва да е public, за да може свободно да се използва от Nhibernate мапинг класовете, за които ще говорим по-напред.
+			  'virtual' също е нужен на Nhibernate, както за всеки друг ORM за да може да се справя
+			  с навременното зареждане на данни(в общия случай: да работи lazy loading-a).
+			  
+			  Последното, което ще разгледаме от Entity класовете е EntityBase&lt;int>, което го има по-горе в примера.
+			  Отделно ще говорим и за Nuget пакетите, референции към проекта и др, но за сега е достатъчно да знаете, че EntityBase се "import-ва" от А1 microservices core проекта.
+			  За улеснение там са изнесени логики за преизползване, които използват повечето проекти. В случая EntityBase е абстрактен клас, *int* описва типът на id-то
+			  на вашето entity и съответно не е нужно да го пишете като свойство в класа. EntityBase носи и други ползи като готови имплементации за да може entity-то да 
+			  бъде сравнявано, хеширано и т.н., все неща нужни за работата с Nhibernate.
+			  
+			  Bonus Tip: Внимавайте с това дали типовете ви са nullable, някои не са по default.
+			  
+			2)Layer 2 -> Тук живеят така наречените мапинги. Всяко едно entity, което е написано, някак трябва логично да се свържи с базата. За тази цел се създават класове,
+			  които когато бъдат подадени на Nhibernate(за уточнение ползваме Fluent Nhibernate) той да може да 'навърже' всичко нужно.
+			  
+			  public class LocationMap : ClassMap&lt;Location>
+			  {
+				  public LocationMap()
+				  {
+				  	  Schema(Schemas.CSales);
+				  	  Table("Locations");
+				  	  Id(x => x.Id);
+				  	  Map(x => x.Name).Column("Location");
+				  }
+			  }
+			  
+			 Отново public, ClassMap е от Nhibernate и той прави цялата магия за намапване заедно с конструктора.
+			 В него се описват Схемата на базата(име на схемата), като *Shemas* е статичен клас от core-a с вече написани стрингове с цел улеснение.
+			 Table -> името на таблицата с която ще е вързано вашето entity.
+			 От тука нататък най-добре да се прочете от https://github.com/FluentNHibernate/fluent-nhibernate/wiki/fluent-mapping или да се разгледа някой от микросървисите
+			 за да разберете какво правят и как работят Id, Map, References, HasMany, etc...
+			 
+			 
+			 3)Layer 3 -> Тук стои логиката зад едно WebApi. Описано е в WebApi раздела.
+          </div>
+        </div>
+        <h3 id="NuGet">Dependencies и NuGet</h3>
+
+        <div class="item">
+          <div class="item_text2">
+                        Nuget представлява package manager за c# проекти (както npm,yarn за frontend). В проектите използваме пакети, 
+			направени въз основа на Microservice._Core проекта. Те са качени на така наречения Nexus и по този начин ги закачаме като нугет depencencies 
+			в нашите проекти.
+			
+			Кратък setup -> влизате в Tools-> NuGet Package manager -> Manage Nuget Packages for solution... Отваря се прозорец откъдето може да търсите, да обновявате 
+			и да триете пакети за проектите във вашия solution. За да добавите връзката към A1 Core пакетите, за да може ги виждате и добавяте, най-вдясно на прозореца 
+			кликнете иконката за настройки, след което в прозореца ,който ви отвори отивате на NuGet package manager -> package sources 
+			Тук цъкате на Зеления плюс за да добавите нов source. 
+			Name -> nexus; Source: http://nexus-a1-infra.apps.ocp4.a1.bg/repository/AllPackages/, след което цъкате Ok.
+			Вече когато browse-вате ще ви излизат и нашите нексус пакети.
+			
+			- Примерни пакети за Domain проекта: 
+			&lt;ItemGroup>
+				&lt;PackageReference Include="MediatR" Version="7.0.0" />
+				&lt;PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+				&lt;PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+				&lt;PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+			&lt;/ItemGroup>
+			&lt;ItemGroup>
+				&lt;PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
+                        &lt;/ItemGroup>
+            
+                        &lt;ItemGroup>
+				&lt;PackageReference Include="Microservice.A1.Core" Version="1.0.7" />
+				&lt;PackageReference Include="Microservice.A1.Db" Version="1.0.8" />
+				&lt;PackageReference Include="Microservice.A1.Security" Version="1.1.0" />
+				&lt;PackageReference Include="Microservice.A1.Web" Version="1.0.4" />
+				&lt;PackageReference Include="Microservice.A1.WebServiceAudit" Version="1.0.4" />
+                        &lt;/ItemGroup>			
+			
+			- Пакети за Domain.Tests
+			    &lt;ItemGroup>
+				&lt;PackageReference Include="Microservice.A1.Client.Task" Version="1.0.5" />
+				&lt;PackageReference Include="Microservice.A1.Db.UnitTest" Version="1.0.3" />
+				&lt;PackageReference Include="nunit" Version="3.12.0" />
+				&lt;PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+				&lt;PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+                        &lt;/ItemGroup>
+			
+			-Примерни пакети за WebApi проекта:
+			    &lt;ItemGroup>
+				&lt;PackageReference Include="Microservice.A1.Client.Web" Version="1.0.13" />
+				&lt;PackageReference Include="Microservice.A1.Hangfire" Version="1.0.2" />
+				&lt;PackageReference Include="Microservice.A1.Web" Version="1.0.4" />
+				&lt;PackageReference Include="Microsoft.AspNetCore.App" />
+				&lt;PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+                            &lt;/ItemGroup>	
+            </div>
+        </div>
+        <h3 id="Tests">Domain.Tests</h3>
+        <div class="item">
+          <div class="item_text2">
+            - Domain.Tests
+		
+		  - Преди всичко е хубаво да се запознаете с Nunit FrameWork-a: https://nunit.org/
+		  - Запознайте се с Sqlite: https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/?tabs=netcore-cli
+		  
+		  След като сте setup-нали проекта с неговите depencencies (има ги по-нагоре), ще трябва да извършим няколко стъпки преди да може
+		  да започнем да пишем първите класове с тестове. Unit тестовете, които ще се изпълняват ще работят на 'локална' база, която ще представлява
+		  структура изградена от истинската база и мапингите описани в Domain.Layer2, но без никакви данни. За тестване ще подаваме сесията на сървисите,
+		  които използваме в Handler-ите на медиатора, създадена от връзката с тази база 'в кеш'.
+		  
+		  Ще трябва да създадем TestFixture класът, в който конструктор да изпълним тасковия bootstrap, за да се създаде изкуствената база.
+		  Ще дам пример от проекта CorporateSales.
+		
+			using CorporateSalesDbBuilder = Microservice.A1.Db.UnitTest.CorpSalesDbBuilder;
+			
+			public class TestFixture
+			{
+				private ICorporateSalesDb _db;
+				protected ISession _session;
+			
+				private static DomainExtensionsData AddUniTestDomain(IServiceCollection services, IConfiguration configuration)
+				{
+					var data = DomainExtensions.ConfigCommon(services, configuration);
+					services.AddSingleton(provider => CorporateSalesDbBuilder.BuildDb(data.Mappings[Factories.CorporateSales]));
+					return data;
+				}
+			
+				public TestFixture()
+				{
+					var bootstrap = new TaskBootstrap
+					{
+						MicroserviceName = Constants.MicroserviceName,
+						AddDomainFunc = AddUniTestDomain,
+						ExecuteFunc = container => { _db = container.GetService&lt;ICorporateSalesDb>(); },
+						CommandLineArguments = new string[] { }
+					};
+					bootstrap.Start();
+					_session = _db.OpenSession();
+				}
+			}		
+			
+		  Нещото, което ще е нужно да направите е да си добавите Builder в Microservice.A1.Db.UnitTest, да го пушнете на remote master-a, да се направи нова версия
+		  на пакета и след като я обновите през Package manager-a вече ще може да го използвате. И замествате от примера CorporateSalesDbBuilder с вашият такъв.
+		  След това следвайте документацията на Nunit за TearDown; За unit test класове, които наследяват TestFixture. Най-лесно ще е да разгледате примери 
+		  отново от проектите Telesales и CorporateSales. Хубава практика е (ако имате достатъчно време) да имате 70% code coverage. Менюто 'Test' във VS ще
+		  ви е главният помошник. Ако имате неочаквани грешки при Code Coverage, 
+		  има шанс те да са предизвикани от Processor Architecture в Test менюто, ако е set-нато на х86. Трябва да е на x64.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
